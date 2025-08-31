@@ -74,8 +74,13 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
 
     await this.findOne(id);
 
-    return this.product.delete({
-      where: { id }
+    return this.product.update({
+      where: { id },
+      data: { status: false }
     });
+
+    // return this.product.delete({
+    //   where: { id }
+    // });
   }
 }
