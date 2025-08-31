@@ -57,8 +57,17 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
       return product;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updateProductDto: UpdateProductDto) {
+
+    //aqui si bien es cierto hacemos una doble peticion a la bd puede consumir mas recursos, otra forma de hacerlo es manejar la excepcion y leer el error y retornarlo
+    
+    await this.findOne(id);
+
+    return this.product.update({
+      where: { id },
+      data: updateProductDto
+    });
+
   }
 
   remove(id: number) {
