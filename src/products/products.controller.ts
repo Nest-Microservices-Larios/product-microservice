@@ -15,10 +15,10 @@ export class ProductsController {
   } 
 
   @Get()
-  findAll(@Query()   PaginationDto: PaginationDto) {
+  findAll(@Query()   paginationDto: PaginationDto) {
 
-    return PaginationDto; 
-    return this.productsService.findAll();
+    //return PaginationDto; 
+    return this.productsService.findAll(paginationDto);
   }
 
   @Get(':id')
