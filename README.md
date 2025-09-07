@@ -2,7 +2,7 @@
 
 ## Dev
 
-1. clo9nar repo
+1. clonar repo
 2. Instalar dependencias
 3. Crear un archivo `.env` basado en `env.template`
 4. Ejecutar migracion de Prisma `npx prisma migrate dev`
