@@ -62,6 +62,8 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
 
   async update(id: number, updateProductDto: UpdateProductDto) {
 
+    const { id: __, ...data } = updateProductDto; //aca estamos asegurando de no mandar el id en el update tya que lo omitimos en el dto
+
     //aqui si bien es cierto hacemos una doble peticion a la bd puede consumir mas recursos, otra forma de hacerlo es manejar la excepcion y leer el error y retornarlo
     
     await this.findOne(id);

@@ -3,32 +3,42 @@ import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { PaginationDto } from 'src/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) { }
 
-  @Post()
-  create(@Body() createProductDto: CreateProductDto) {
+  //@Post()
+  @MessagePattern({ cmd: 'CreateProduct' })
+  create(@Payload() createProductDto: CreateProductDto) {
     //return createProductDto; 
     return this.productsService.create(createProductDto);
   }
 
-  @Get()
-  findAll(@Query() paginationDto: PaginationDto) {
+  //@Get()
+  @MessagePattern({ cmd: 'GetProducts' })
+  findAll(@Payload() paginationDto: PaginationDto) {
 
     //return PaginationDto; 
     return this.productsService.findAll(paginationDto);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  //@Get(':id')
+  @MessagePattern({ cmd: 'GetProductbyId' })
+  findOne(@Payload('id', ParseIntPipe) id: number) {
     return this.productsService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id', ParseIntPipe) id: number, @Body() updateProductDto: UpdateProductDto) {
-    return this.productsService.update(id, updateProductDto);
+  //@Patch(':id')
+  @MessagePattern({ cmd: 'UpdateProduct' })
+  update(
+    // @Param('id', ParseIntPipe) id: number, 
+    // @Body() updateProductDto: UpdateProductDto
+    @Payload() updateProductDto: UpdateProductDto
+  ) {
+    return this.productsService.update(updateProductDto.id, updateProductDto);
     // return{
     //    id,updateProductDto
     // }
@@ -36,8 +46,9 @@ export class ProductsController {
     //return this.productsService.update(+id, updateProductDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id',ParseIntPipe) id: number) {
+  //@Delete(':id')
+  @MessagePattern({ cmd: 'DeleteProduct' })
+  remove(@Payload('id', ParseIntPipe) id: number) {
     return this.productsService.remove(id);
   }
 }
